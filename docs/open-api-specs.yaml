@@ -1,0 +1,58 @@
+openapi: 3.0.0
+info:
+  title: Simple Virtual Wallet
+  description: API for a simple virtual wallet operation
+  contact:
+    email: vinic.otus@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 1.0.0
+paths:
+  /transactions:
+    post:
+      tags:
+        - create
+      summary: adds a transaction
+      description: Create a transaction to the system
+      operationId: addtransaction
+      requestBody:
+        description: transaction item to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transactionDTO'
+      responses:
+        '200':
+          description: transaction has been created successfuly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing item already exists
+components:
+  schemas:
+    transactionDTO:
+      required:
+        - targetAccount
+        - amount
+      type: object
+      properties:
+        targetAccount:
+          type: string
+          format: uuid
+          example: 139040aa-dbb3-480c-823d-e90f048ef275
+        amount:
+          type: number
+          format: currency
+          example: 12345.67
+    inline_response_200:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 139040aa-dbb3-480c-823d-e90f048ef275
